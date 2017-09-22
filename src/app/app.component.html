@@ -1,0 +1,10 @@
+
+
+<main>
+  <button (click)="back()" md-raised-button color="primary">GO BACK</button>
+
+
+  <test-list *ngIf="mode===1"></test-list>
+  <question-list *ngIf="mode===2"></question-list>
+  <answer-list *ngIf="mode===3"></answer-list>
+</main>
