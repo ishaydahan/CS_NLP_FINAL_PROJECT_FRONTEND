@@ -10,9 +10,9 @@ import { QuestionService } from './question.service';
 import { AnswerListComponent } from './answer-list.component';
 import { AnswerService } from './answer.service';
 import { MdButtonModule } from '@angular/material';
-import {enableProdMode} from '@angular/core';
-
-enableProdMode();
+// import {enableProdMode} from '@angular/core';
+//
+// enableProdMode();
 
 @NgModule({
   declarations: [
