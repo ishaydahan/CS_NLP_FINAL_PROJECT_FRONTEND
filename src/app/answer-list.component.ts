@@ -25,7 +25,7 @@ export class AnswerListComponent implements OnInit {
     newAnswer: Answer = new Answer();
     editing = false;
     editingAnswer: Answer = new Answer();
-    public tempGrade: number;
+    public tempGrade = null;
     constructor(
       private answerService: AnswerService,
       public appComponent: AppComponent
@@ -42,13 +42,14 @@ export class AnswerListComponent implements OnInit {
     }
 
     createAnswer(answerForm: NgForm): void {
-      if (this.tempGrade > -1) {
-        this.newAnswer.grade = this.tempGrade;
-        this.newAnswer.writer = 'TEACHER';
-      }else {
+      if (this.tempGrade === null) {
         this.newAnswer.grade = -2;
         this.newAnswer.writer = 'STUDENT';
+      }else {
+        this.newAnswer.grade = this.tempGrade;
+        this.newAnswer.writer = 'TEACHER';
       }
+      this.clearEditing();
       this.answerService.createAnswer(this.appComponent.test, this.appComponent.question, this.newAnswer)
         .then(createAnswer => {
           answerForm.reset();
@@ -91,6 +92,7 @@ export class AnswerListComponent implements OnInit {
 
   clearEditing(): void {
       this.editingAnswer = new Answer();
+      this.tempGrade = null;
       this.editing = false;
     }
 
