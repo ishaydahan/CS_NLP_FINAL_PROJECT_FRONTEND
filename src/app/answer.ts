@@ -6,5 +6,6 @@ export class Answer {
   writerId: string;
   grade: number;
   verified: boolean;
+  setSyntaxMatchFound: boolean;
   createdAt: Date;
 }

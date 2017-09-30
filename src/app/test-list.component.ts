@@ -3,11 +3,20 @@ import { TestService } from './test.service';
 import { Test } from './test';
 import {NgForm} from '@angular/forms';
 import { AppComponent } from './app.component';
+import { ConfirmationService  } from '@jaspero/ng2-confirmations';
+
+export interface ResolveEmit {
+  // Returns this if modal resolved with yes or no
+  resolved?: boolean;
+  // If the modal was closed in some other way this is removed
+  closedWithOutResolving?: string;
+}
 
 @Component({
   selector: 'test-list',
   templateUrl: './test-list.component.html'
 })
+
 
 export class TestListComponent implements OnInit {
     tests: Test[];
@@ -16,8 +25,18 @@ export class TestListComponent implements OnInit {
     editingTest: Test = new Test();
     constructor(private testService: TestService
       , private appComponent: AppComponent
+      , public _confirmation: ConfirmationService
     ) {
     }
+
+  public options2 = {
+  overlay: true,
+  overlayClickToClose: true,
+  showCloseButton: false,
+  confirmText: '',
+  declineText: 'Yes'
+}
+
 
     ngOnInit(): void {
       this.getTests();
@@ -38,10 +57,12 @@ export class TestListComponent implements OnInit {
     }
 
     deleteTest(id: string): void {
-        this.testService.deleteTest(id)
-        .then(() => {
-          this.tests = this.tests.filter(test => test.id != id);
-        });
+      if(confirm("Are you sure?")) {
+            this.testService.deleteTest(id)
+              .then(() => {
+                this.tests = this.tests.filter(test => test.id != id);
+              });
+          }
     }
 
     updateTest(testData: Test): void {
@@ -53,6 +74,7 @@ export class TestListComponent implements OnInit {
         this.clearEditing();
       });
     }
+
 
     editTest(testData: Test): void {
       this.editing = true;
@@ -70,9 +92,6 @@ export class TestListComponent implements OnInit {
       this.appComponent.mode = 2;
     }
 
-    checkTest(test: Test): void {
-      this.testService.checkTest(test.id)
-        .then();
-    }
+
 
 }

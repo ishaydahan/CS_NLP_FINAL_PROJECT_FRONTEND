@@ -1,19 +1,15 @@
 <div class="test-content">
     <h1 class="page-title">My Tests</h1>
     <div class="test-create">
-      <form #testForm="ngForm" (ngSubmit) = "createTest(testForm)" novalidate>
-    		<input type="text" id="title" class="form-control" placeholder="Type a test and press enter..."
+      <form #testForm="ngForm" novalidate>
+    		<input type="text" id="title" class="form-control" placeholder="Give a name to this Test"
     		       required
     		       name="title" [(ngModel)]="newTest.content"
     		       #title="ngModel" >
-
-    		<div *ngIf="title.errors && title.dirty"
-    		     class="alert alert-danger">
-    		    <div [hidden]="!title.errors.required">
-    		      Title is required.
-    		    </div>
-    		</div>
-    	</form>
+        <div class="test-buttons">
+          <button  (click) = "createTest(testForm)" [disabled]="!title.valid" md-raised-button color="primary">Add Test</button>
+        </div>
+      </form>
     </div>
     <ul class="test-list">
       <li *ngFor="let test of tests"  >
@@ -28,12 +24,11 @@
                 <a (click)="buildTest(test)">
                 	<i class="material-icons build">build</i>
                 </a>
-                <a (click)="checkTest(test)">
-                	<i class="material-icons school">school</i>
-                </a>
                 <a (click)="deleteTest(test.id)">
                 	<i class="material-icons delete">clear</i>
                 </a>
+                <jaspero-confirmations [defaultSettings]="options2"></jaspero-confirmations>
+
             </span>
         </div>
         <div class="test-edit" *ngIf="editing && editingTest.id === test.id">

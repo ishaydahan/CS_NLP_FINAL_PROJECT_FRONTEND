@@ -2,19 +2,20 @@
   <h1 class="page-title">{{this.appComponent.testString}}</h1>
   <h3 class="page-title">Add Question:</h3>
     <div class="question-create">
-      <form #questionForm="ngForm" (ngSubmit) = "createQuestion(questionForm)" novalidate>
-    		<input type="text" id="title" class="form-control" placeholder="Type a question and press enter..."
-    		       required
-    		       name="title" [(ngModel)]="newQuestion.content"
-    		       #title="ngModel" >
-
-    		<div *ngIf="title.errors && title.dirty"
-    		     class="alert alert-danger">
-    		    <div [hidden]="!title.errors.required">
-    		      Title is required.
-    		    </div>
-    		</div>
-    	</form>
+      <form #questionForm="ngForm" novalidate>
+        <input type="text" id="title" class="form-control" placeholder="Type a question"
+               required
+               name="title" [(ngModel)]="newQuestion.content"
+               #title="ngModel" >
+        <div class="question-buttons">
+          <button  (click) = "createQuestion(questionForm)" [disabled]="!title.valid" md-raised-button color="primary">Add Question</button>
+          <div class="divider"></div>
+          <button (click)="checkTest()" md-raised-button color="primary">Check Test</button>
+            <simple-notifications [options]="options"></simple-notifications>
+          <div class="divider"></div>
+          <button (click)="goBack()" md-raised-button color="primary">Go back</button>
+        </div>
+      </form>
     </div>
   <h3 class="page-title">All Questions:</h3>
   <ul class="question-list">
@@ -30,12 +31,11 @@
                 <a (click)="buildQuestion(question)">
                 	<i class="material-icons build">build</i>
                 </a>
-                <a (click)="checkQuestion(question)">
-                	<i class="material-icons school">school</i>
-                </a>
                 <a (click)="deleteQuestion(question.id)">
                 	<i class="material-icons delete">clear</i>
                 </a>
+                <jaspero-confirmations [defaultSettings]="options2"></jaspero-confirmations>
+
             </span>
         </div>
         <div class="question-edit" *ngIf="editing && editingQuestion.id === question.id">

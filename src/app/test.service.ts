@@ -6,8 +6,8 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class TestService {
-  private baseUrl = 'http://bgucsproject.azurewebsites.net';
-  private mode = 0;
+  private baseUrl = 'http://localhost:8080';
+  // private baseUrl = 'http://bgucsproject.azurewebsites.net';
 
   constructor(private http: Http) {}
 
@@ -23,6 +23,7 @@ export class TestService {
       .toPromise().then(response => response.json() as Test)
       .catch(this.handleError);
   }
+
 
   updateTest(testData: Test): Promise<Test> {
     return this.http.put(this.baseUrl + '/api/tests/' + testData.id, testData)

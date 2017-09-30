@@ -10,9 +10,11 @@ import { QuestionService } from './question.service';
 import { AnswerListComponent } from './answer-list.component';
 import { AnswerService } from './answer.service';
 import { MdButtonModule } from '@angular/material';
-// import {enableProdMode} from '@angular/core';
-//
-// enableProdMode();
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { SimpleNotificationsModule } from 'angular2-notifications';
+import { JasperoConfirmationsModule  } from '@jaspero/ng2-confirmations';
+
 
 @NgModule({
   declarations: [
@@ -25,7 +27,10 @@ import { MdButtonModule } from '@angular/material';
     BrowserModule,
     HttpModule,
     FormsModule,
-    MdButtonModule
+    MdButtonModule,
+    JasperoConfirmationsModule ,
+    SimpleNotificationsModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [TestService, QuestionService, AnswerService],
   bootstrap: [AppComponent]
