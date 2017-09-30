@@ -9,10 +9,10 @@
              name="title" [(ngModel)]="newAnswer.content"
              #title="ngModel" >
       <input type="number" id="grade" class="form-control" placeholder="Type a grade [0-100] or leave empty for student"
-             name="title" [(ngModel)]="tempGrade"
-             #title="ngModel" >
+             name="grade" [(ngModel)]="tempGrade"
+             #grade="ngModel" >
       <div class="answer-buttons">
-        <button (click)= "createAnswer(answerForm)" [disabled]="!title.valid" md-raised-button color="primary">Add Answer</button>
+        <button (click)= "createAnswer(answerForm)" [disabled]="!title.valid || tempGrade<0 || tempGrade>100" md-raised-button color="primary">Add Answer</button>
         <div class="divider"></div>
         <button (click)="checkQuestion()" md-raised-button color="primary">Check Question</button>
         <simple-notifications [options]="options"></simple-notifications>
@@ -26,24 +26,21 @@
 
   <h3 class="page-title">All Answers:</h3>
   <ul class="answer-list">
-    <li *ngFor="let answer of answers"  >
+    <li *ngFor="let answer of answers; let i = index">
       <div class="answer-row-good" *ngIf="(!editing || editingAnswer.id != answer.id) && answer.grade>=50">
         <span class="answer-prop">
             <a title="WRITER">
-              <i class="material-icons person" *ngIf="answer.writer==='TEACHER'">person</i>
-              <i class="material-icons school" *ngIf="answer.writer==='STUDENT'">school</i>
-            </a>
-            <a title="IS VERIFIED">
-              <i class="material-icons done_all" *ngIf="answer.verified">done_all</i>
-              <i class="material-icons priority_high" *ngIf="!answer.verified">priority_high</i>
+              <i class="material-icons school" *ngIf="answer.writer==='TEACHER'">school</i>
+              <i class="material-icons face" *ngIf="answer.writer==='STUDENT'">face</i>
             </a>
         </span>
         <span class="answer-title">
           {{answer.content}} {{answer.grade>-1 ? '(' + answer.grade/100 + ')' : ''}}
         </span>
         <span class="answer-actions">
-          <a (click)="approveAnswer(answer)" title="APPROVE" *ngIf="answer.grade>-1">
-            <i class="material-icons done">done</i>
+          <a (click)="approveAnswer(answer)" title="APPROVE" *ngIf="answer.grade>-1 && answer.writer==='STUDENT'">
+            <i class="material-icons thumb_up" *ngIf="answer.verified">thumb_up</i>
+            <i class="material-icons thumb_down" *ngIf="!answer.verified">thumb_down</i>
           </a>
           <a (click)="editAnswer(answer)" title="EDIT GRADE">
             <i class="material-icons edit">edit</i>
@@ -57,20 +54,17 @@
       <div class="answer-row-bad" *ngIf="(!editing || editingAnswer.id != answer.id)&& answer.grade<50 && answer.grade>-1">
         <span class="answer-prop">
             <a title="WRITER">
-              <i class="material-icons person" *ngIf="answer.writer==='TEACHER'">person</i>
-              <i class="material-icons school" *ngIf="answer.writer==='STUDENT'">school</i>
-            </a>
-            <a title="IS VERIFIED">
-              <i class="material-icons done_all" *ngIf="answer.verified">done_all</i>
-              <i class="material-icons priority_high" *ngIf="!answer.verified">priority_high</i>
+              <i class="material-icons school" *ngIf="answer.writer==='TEACHER'">school</i>
+              <i class="material-icons face" *ngIf="answer.writer==='STUDENT'">face</i>
             </a>
         </span>
         <span class="answer-title">
           {{answer.content}} {{answer.grade>-1 ? '(' + answer.grade/100 + ')' : ''}}
         </span>
         <span class="answer-actions">
-                <a (click)="approveAnswer(answer)" *ngIf="answer.grade>-1">
-                	<i class="material-icons done">done</i>
+                <a (click)="approveAnswer(answer)" *ngIf="answer.grade>-1 && answer.writer==='STUDENT'">
+                  <i class="material-icons thumb_up" *ngIf="answer.verified">thumb_up</i>
+                  <i class="material-icons thumb_down" *ngIf="!answer.verified">thumb_down</i>
                 </a>
                 <a (click)="editAnswer(answer)">
                 	<i class="material-icons edit">edit</i>
@@ -85,8 +79,8 @@
       <div class="answer-row-ungraded" *ngIf="(!editing || editingAnswer.id != answer.id) && answer.grade<0">
         <span class="answer-prop">
             <a title="WRITER">
-              <i class="material-icons person" *ngIf="answer.writer==='TEACHER'">person</i>
-              <i class="material-icons school" *ngIf="answer.writer==='STUDENT'">school</i>
+              <i class="material-icons school" *ngIf="answer.writer==='TEACHER'">school</i>
+              <i class="material-icons face" *ngIf="answer.writer==='STUDENT'">face</i>
             </a>
         </span>
         <span class="answer-title">
@@ -116,6 +110,9 @@
                 </a>
             </span>
       </div>
+
+      <div class="divider2" *ngIf="answer.writer==='TEACHER' && answers[i+1]!==undefined && answers[i+1].writer==='STUDENT'"></div>
+
     </li>
   </ul>
   <div class="no-answers" *ngIf="answers && answers.length == 0">

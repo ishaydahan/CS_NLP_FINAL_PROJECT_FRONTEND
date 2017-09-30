@@ -295,10 +295,15 @@ li.completed .question-title {
   align-items: center;
   justify-content: center;
 }
+.answer-content .divider {
+  width: 40px;
+  height: auto;
+  display: inline-block;
+}
 
-.answer-content .divider{
-  width:40px;
-  height:auto;
+.answer-content .divider2{
+  width:auto;
+  height:10px;
   display:inline-block;
 }
 

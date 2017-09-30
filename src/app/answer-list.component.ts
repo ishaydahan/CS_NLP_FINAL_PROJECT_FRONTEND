@@ -22,6 +22,7 @@ export interface ResolveEmit {
 
 export class AnswerListComponent implements OnInit {
     answers: Answer[];
+    prevWasTeacher=false;
     newAnswer: Answer = new Answer();
     editing = false;
     editingAnswer: Answer = new Answer();
@@ -53,7 +54,9 @@ export class AnswerListComponent implements OnInit {
 
     getAnswers(): void {
       this.answerService.getAnswers(this.appComponent.test, this.appComponent.question)
-        .then(answers => this.answers = answers );
+        .then(answers => {
+          this.answers = answers;
+        });
     }
 
     createAnswer(answerForm: NgForm): void {
@@ -68,7 +71,9 @@ export class AnswerListComponent implements OnInit {
         .then(createAnswer => {
           answerForm.reset();
           this.newAnswer = new Answer();
-          this.answers.unshift(createAnswer)
+          if (createAnswer.writer==='STUDENT') this.answers.push(createAnswer)
+          else this.answers.unshift(createAnswer)
+
         });
     }
 
@@ -97,7 +102,7 @@ export class AnswerListComponent implements OnInit {
     }
 
   approveAnswer(answerData: Answer): void {
-    answerData.verified = true;
+    answerData.verified = !answerData.verified;
     this.answerService.updateAnswer(this.appComponent.test, this.appComponent.question, answerData)
       .then(updatedAnswer => {
         let existingAnswer = this.answers.find(answer => answer.id === updatedAnswer.id);

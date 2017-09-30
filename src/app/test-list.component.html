@@ -7,7 +7,7 @@
     		       name="title" [(ngModel)]="newTest.content"
     		       #title="ngModel" >
         <div class="test-buttons">
-          <button  (click) = "createTest(testForm)" [disabled]="!title.valid" md-raised-button color="primary">Add Test</button>
+          <button (click) = "createTest(testForm)" [disabled]="!title.valid" md-raised-button color="primary">Add Test</button>
         </div>
       </form>
     </div>
