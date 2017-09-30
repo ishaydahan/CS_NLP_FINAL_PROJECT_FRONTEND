@@ -301,10 +301,9 @@ li.completed .question-title {
   display: inline-block;
 }
 
-.answer-content .divider2{
-  width:auto;
-  height:10px;
-  display:inline-block;
+.answer-content .bottom-divider{
+  padding-bottom: 30px;
+  display:block
 }
 
 .question-content .question-buttons {

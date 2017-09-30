@@ -5,8 +5,8 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class QuestionService {
-  private baseUrl = 'http://localhost:8080';
-  // private baseUrl = 'http://bgucsproject.azurewebsites.net';
+  // private baseUrl = 'http://localhost:8080';
+  private baseUrl = 'http://bgucsproject.azurewebsites.net';
 
   constructor(private http: Http) {
   }
